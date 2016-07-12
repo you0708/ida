@@ -1,0 +1,114 @@
+[DISASM]
+000000	 //
+cccccc	 //Default color
+99f0a0	 //Regular comment
+b3b3b3	 //Repeatable comment
+b3b3b3	 //Automatic comment
+f5f5f5	 //Instruction
+336699	 //Dummy Data Name
+00ff00	 //Regular Data Name
+acefaf	 //Demangled Name
+f5f5f5	 //Punctuation
+6699cc	 //Char constant in instruction
+00ff00	 //String constant in instruction
+6699cc	 //Numeric constant in instruction
+6699cc	 //Void operand
+008000	 //Code reference
+336699	 //Data reference
+0000ff	 //Code reference to tail byte
+0000ff	 //Data reference to tail byte
+0000ff	 //Error or problem
+c0c0c0	 //Line prefix
+005600	 //Binary line prefix bytes
+acefaf	 //Extra line
+00ff55	 //Alternative operand
+999999	 //Hidden name
+66ccff	 //Library function name
+6699cc	 //Local variable name
+f5f5f5	 //Dummy code name
+00ff00	 //Assembler directive
+6699cc	 //Macro
+6699cc	 //String constant in data directive
+00b400	 //Char constant in data directive
+6699cc	 //Numeric constant in data directive
+f5f5f5	 //Keywords
+f5f5f5	 //Register name
+0080ff	 //Imported name
+f5f5f5	 //Segment name
+408000	 //Dummy unknown name
+00ff00	 //Regular code name
+999999	 //Regular unknown name
+00ff55	 //Collapsed line
+000000	 //Max color number
+000000	 //Line prefix: library function
+00ff00	 //Line prefix: regular function
+66ccff	 //Line prefix: instruction
+f5f5f5	 //Line prefix: data
+008000	 //Line prefix: unexplored
+336699	 //Line prefix: externs
+999999	 //Line prefix: current item
+0080ff	 //Line prefix: current line
+000000	 //Punctuation
+00ff00	 //Opcode bytes
+000000	 //Manual operand
+[NAVBAR]
+66ccff	 //Library function
+00ff55	 //Regular function
+008000	 //Instruction
+004080	 //Data item
+666666	 //Unexplored
+0080ff	 //External symbol
+5b5bff	 //Errors
+000600	 //Gaps
+f5f5f5	 //Cursor
+f5f5f5	 //Address
+[DEBUG]
+00ff00	 //Current IP
+0080ff	 //Current IP (Enabled)
+004080	 //Current IP (Disabled)
+008000	 //Current IP (Unavailible)
+0000ff	 //Address
+004080	 //Address (Enabled)
+b3b3b3	 //Address (Disabled)
+b3b3b3	 //Address (Unavailible)
+000000	 //Registers
+004080	 //Registers (Changed)
+0080ff	 //Registers (Edited)
+[ARROW]
+ffffff	 //Jump in current function
+236cff	 //Jump external to function
+00ff00	 //Jump under the cursor
+008000	 //Jump target
+ff4040	 //Register target
+[GRAPH]
+f5f5f5	 //Top color
+acefaf	 //Bottom color
+f5f5f5	 //Normal title
+00ff00	 //Selected title
+cfcfa0	 //Current title
+00ffff	 //Group frame
+000000	 //Node shadow
+ffffcc	 //Highlight color 1
+ccffcc	 //Highlight color 2
+0000ff	 //Foreign node
+ff0000	 //Normal edge
+008000	 //Yes edge
+0000ff	 //No edge
+ff00ff	 //Highlighted edge
+ffff00	 //Current edge
+[MISC]
+f5f5f5	 //Message text
+000000	 //Message background
+404080	 //Patched bytes
+0080ff	 //Unsaved changes
+[OTHER]
+66ffcc	 //Highlight color
+000000	 //Hint color
+[SYNTAX]
+ff0000	0	0	 //Keyword 1
+800080	0	0	 //Keyword 2
+0000ff	0	0	 //Keyword 3
+00008b	0	0	 //String
+006400	0	1	 //Comment
+ff0000	1	0	 //Preprocessor
+8b8b00	1	0	 //Number
