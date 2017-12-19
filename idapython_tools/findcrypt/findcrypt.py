@@ -1,7 +1,12 @@
 import struct
-import idc
+import idc, idautils
 import ida_bytes
 from consts import *
+
+if idc.BADADDR == 0xFFFFFFFF:
+    digits = 8
+else:
+    digits = 16
 
 def convert_to_byte_array(const):
     byte_array = []
@@ -20,17 +25,17 @@ def main():
     for const in non_sparse_consts:
         const["byte_array"] = convert_to_byte_array(const)
 
-    for start in Segments():
-        print("[*] searching for crypto constants in %s" % get_segm_name(start))
+    for start in idautils.Segments():
+        print("[*] searching for crypto constants in %s" % idc.get_segm_name(start))
         ea = start
-        while ea < get_segm_end(start):
-            bbbb = list(struct.unpack("BBBB", get_bytes(ea, 4)))
+        while ea < idc.get_segm_end(start):
+            bbbb = list(struct.unpack("BBBB", idc.get_bytes(ea, 4)))
             for const in non_sparse_consts:
                 if bbbb != const["byte_array"][:4]:
                     continue
                 if map(lambda x:ord(x), get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
-                    print("0x%08X: found const array %s (used in %s)" % (ea, const["name"], const["algorithm"]))
-                    set_name(ea, const["name"])
+                    print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
+                    idc.set_name(ea, const["name"])
                     if const["size"] == "B":
                         idc.create_byte(ea)
                     elif const["size"] == "L":
@@ -58,7 +63,12 @@ def main():
                         else:
                             break
                     else:
-                        print("0x%08X: found sparse constants for %s" % (ea, const["algorithm"]))
+                        print(("0x%0" + str(digits) + "X: found sparse constants for %s") % (ea, const["algorithm"]))
+                        cmt = idc.get_cmt(idc.prev_head(ea), 0)
+                        if cmt:
+                            idc.set_cmt(idc.prev_head(ea), cmt + ' ' + const["name"], 0)
+                        else:
+                            idc.set_cmt(idc.prev_head(ea), const["name"], 0)
                         ea = tmp
                         break
                 ea += 1
