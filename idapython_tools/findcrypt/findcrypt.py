@@ -33,7 +33,7 @@ def main():
             for const in non_sparse_consts:
                 if bbbb != const["byte_array"][:4]:
                     continue
-                if map(lambda x:ord(x), get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
+                if map(lambda x:ord(x), idc.get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
                     idc.set_name(ea, const["name"])
                     if const["size"] == "B":
@@ -42,14 +42,14 @@ def main():
                         idc.create_dword(ea)
                     elif const["size"] == "Q":
                         idc.create_qword(ea)
-                    make_array(ea, len(const["array"]))
+                    idc.make_array(ea, len(const["array"]))
                     ea += len(const["byte_array"]) - 4
                     break
             ea += 4
 
         ea = start
-        if get_segm_attr(ea, SEGATTR_TYPE) == 2:
-            while ea < get_segm_end(start):
+        if idc.get_segm_attr(ea, idc.SEGATTR_TYPE) == 2:
+            while ea < idc.get_segm_end(start):
                 d = ida_bytes.get_dword(ea)
                 for const in sparse_consts:
                     if d != const["array"][0]:
