@@ -2082,6 +2082,14 @@ non_sparse_consts = [
                 0x1948C25C, 0x02FB8A8C, 0x01C36AE4, 0xD6EBE1F9,
                 0x90D4F869, 0xA65CDEA0, 0x3F09252D, 0xC208E69F,
                 0xB74E6132, 0xCE77E25B, 0x578FDFE3, 0x3AC372E6 ]},
+    {"algorithm": "Salsa20_ChaCha",
+     "name": "Salsa20_ChaCha_sigma",
+     "size": "B",
+     "array": [ 101, 120, 112, 97, 110, 100, 32, 51, 50, 45, 98, 121, 116, 101, 32, 107 ]},
+    {"algorithm": "Salsa20_ChaCha",
+     "name": "Salsa20_ChaCha_tau",
+     "size": "B",
+     "array": [ 101, 120, 112, 97, 110, 100, 32, 49, 54, 45, 98, 121, 116, 101, 32, 107 ]},
 ]
 
 '''
