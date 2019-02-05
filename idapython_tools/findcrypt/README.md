@@ -16,6 +16,7 @@ Execute findcrypt.py on your IDA. Tested on IDA 7.0+ for macOS.
 * SHA256: SHA256_K, SHA256_H
 * SHA512: SHA512_K
 * RC5_RC6: RC5_RC6_PQ
+* Salsa20_ChaCha: Salsa20_ChaCha_sigma, Salsa20_ChaCha_tau
 
 ## Todo
 1. Add more constants - I always welcome your pull request :)
