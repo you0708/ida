@@ -2137,11 +2137,67 @@ sparse_consts = [
      "array": [ 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 ]},
 ]
 
+operand_consts = [
+    {"algorithm": "Adler-32",
+     "name": "Adler32_BASE",
+     "value": 65521},
+    {"algorithm": "(XX)TEA",
+     "name": "(XX)TEA_delta",
+     "value": 0x9E3779B9},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_1",
+     "value": 0x9E3779B185EBCA87},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_2",
+     "value": 0xC2B2AE3D27D4EB4F},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_3",
+     "value": 0x165667B19E3779F9},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_4",
+     "value": 0x85EBCA77C2B2AE63},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_5",
+     "value": 0x27D4EB2F165667C5},
+    {"algorithm": "xxHash32 / xxHash64",
+     "name": "xxHash32_PRIME32_1 / xxHash64_PRIME64_1(high-order)",
+     "value": 0x9E3779B1},
+    {"algorithm": "xxHash32 / xxHash64",
+     "name": "xxHash32_PRIME32_2 / xxHash64_PRIME64_4(high-order)",
+     "value": 0x85EBCA77},
+    {"algorithm": "xxHash32 / xxHash64",
+     "name": "xxHash32_PRIME32_3 / xxHash64_PRIME64_2(high-order)",
+     "value": 0xC2B2AE3D},
+    {"algorithm": "xxHash32 / xxHash64",
+     "name": "xxHash32_PRIME32_4 / xxHash64_PRIME64_5(high-order)",
+     "value": 0x27D4EB2F},
+    {"algorithm": "xxHash32 / xxHash64",
+     "name": "xxHash32_PRIME32_5 / xxHash64_PRIME64_3(high-order)",
+     "value": 0x165667B1},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_1(low-order)",
+     "value": 0x85EBCA87},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_2(low-order)",
+     "value": 0x27D4EB4F},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_3(low-order)",
+     "value": 0x9E3779F9},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_4(low-order)",
+     "value": 0xC2B2AE63},
+    {"algorithm": "xxHash64",
+     "name": "xxHash64_PRIME64_5(low-order)",
+     "value": 0x165667C5},
+]
+
 def main():
     print("[*] Supported crypt constants:")
     for c in non_sparse_consts:
         print(" %s: %s" % (c["algorithm"], c["name"]))
     for c in sparse_consts:
+        print(" %s: %s" % (c["algorithm"], c["name"]))
+    for c in operand_consts:
         print(" %s: %s" % (c["algorithm"], c["name"]))
 if __name__ == '__main__':
     main()
