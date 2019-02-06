@@ -1,6 +1,7 @@
 import struct
 import idc, idautils
 import ida_bytes
+import ida_ua
 from consts import *
 
 if idc.BADADDR == 0xFFFFFFFF:
@@ -33,7 +34,7 @@ def main():
             for const in non_sparse_consts:
                 if bbbb != const["byte_array"][:4]:
                     continue
-                if map(lambda x:ord(x), get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
+                if map(lambda x:ord(x), idc.get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
                     idc.set_name(ea, const["name"])
                     if const["size"] == "B":
@@ -42,14 +43,14 @@ def main():
                         idc.create_dword(ea)
                     elif const["size"] == "Q":
                         idc.create_qword(ea)
-                    make_array(ea, len(const["array"]))
+                    idc.make_array(ea, len(const["array"]))
                     ea += len(const["byte_array"]) - 4
                     break
             ea += 4
 
         ea = start
-        if get_segm_attr(ea, SEGATTR_TYPE) == 2:
-            while ea < get_segm_end(start):
+        if idc.get_segm_attr(ea, idc.SEGATTR_TYPE) == idc.SEG_CODE:
+            while ea < idc.get_segm_end(start):
                 d = ida_bytes.get_dword(ea)
                 for const in sparse_consts:
                     if d != const["array"][0]:
@@ -73,22 +74,24 @@ def main():
                         break
                 ea += 1
 
-    funcs = Functions()
+    print("[*] searching for crypto constants in immediate operand")
+    funcs = idautils.Functions()
     for f in funcs:
-        flags = get_func_flags(f)
-        if (not flags & (FUNC_LIB | FUNC_THUNK)):
+        flags = idc.get_func_flags(f)
+        if (not flags & (idc.FUNC_LIB | idc.FUNC_THUNK)):
             ea = f
-            f_end = GetFunctionAttr(f, FUNCATTR_END)
+            f_end = idc.get_func_attr(f, idc.FUNCATTR_END)
             while (ea < f_end):
                 imm_operands = []
-                if get_operand_type(ea, 0) == o_imm:
-                    imm_operands.append(get_operand_value(ea, 0))
-                if get_operand_type(ea, 1) == o_imm:
-                    imm_operands.append(get_operand_value(ea, 1))
-                if get_operand_type(ea, 2) == o_imm:
-                    imm_operands.append(get_operand_value(ea, 2))
+                insn = ida_ua.insn_t()
+                ida_ua.decode_insn(insn, ea)
+                for i in xrange(len(insn.ops)):
+                    if insn.ops[i].type == ida_ua.o_void:
+                        break
+                    if insn.ops[i].type == ida_ua.o_imm:
+                        imm_operands.append(insn.ops[i].value)
                 if len(imm_operands) == 0:
-                    ea = FindCode(ea, SEARCH_DOWN)
+                    ea = idc.find_code(ea, idc.SEARCH_DOWN)
                     continue
                 for const in operand_consts:
                     if const["value"] in imm_operands:
@@ -99,7 +102,7 @@ def main():
                         else:
                             idc.set_cmt(ea, const["name"], 0)
                         break
-                ea = FindCode(ea, SEARCH_DOWN)
+                ea = idc.find_code(ea, idc.SEARCH_DOWN)
     print("[*] finished")
 
 if __name__ == '__main__':
