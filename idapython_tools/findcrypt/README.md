@@ -16,6 +16,12 @@ Execute findcrypt.py on your IDA. Tested on IDA 7.0+ for macOS.
 * SHA256: SHA256_K, SHA256_H
 * SHA512: SHA512_K
 * RC5_RC6: RC5_RC6_PQ
+* Salsa20_ChaCha: Salsa20_ChaCha_sigma, Salsa20_ChaCha_tau
+* Camellia: Camellia_sigma, Camellia_SBOX[1-4]
+* Adler-32: Adler32_BASE
+* (XX)TEA: (XX)TEA_delta
+* xxHash32: xxHash32_PRIME32_[1-5]
+* xxHash64: xxHash64_PRIME64_[1-5]
 
 ## Todo
 1. Add more constants - I always welcome your pull request :)

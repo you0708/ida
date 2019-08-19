@@ -1,6 +1,7 @@
 import struct
 import idc, idautils
 import ida_bytes
+import ida_ua
 from consts import *
 
 if idc.BADADDR == 0xFFFFFFFF:
@@ -48,7 +49,7 @@ def main():
             ea += 4
 
         ea = start
-        if idc.get_segm_attr(ea, idc.SEGATTR_TYPE) == 2:
+        if idc.get_segm_attr(ea, idc.SEGATTR_TYPE) == idc.SEG_CODE:
             while ea < idc.get_segm_end(start):
                 d = ida_bytes.get_dword(ea)
                 for const in sparse_consts:
@@ -72,6 +73,36 @@ def main():
                         ea = tmp
                         break
                 ea += 1
+
+    print("[*] searching for crypto constants in immediate operand")
+    funcs = idautils.Functions()
+    for f in funcs:
+        flags = idc.get_func_flags(f)
+        if (not flags & (idc.FUNC_LIB | idc.FUNC_THUNK)):
+            ea = f
+            f_end = idc.get_func_attr(f, idc.FUNCATTR_END)
+            while (ea < f_end):
+                imm_operands = []
+                insn = ida_ua.insn_t()
+                ida_ua.decode_insn(insn, ea)
+                for i in xrange(len(insn.ops)):
+                    if insn.ops[i].type == ida_ua.o_void:
+                        break
+                    if insn.ops[i].type == ida_ua.o_imm:
+                        imm_operands.append(insn.ops[i].value)
+                if len(imm_operands) == 0:
+                    ea = idc.find_code(ea, idc.SEARCH_DOWN)
+                    continue
+                for const in operand_consts:
+                    if const["value"] in imm_operands:
+                        print(("0x%0" + str(digits) + "X: found immediate operand constants for %s") % (ea, const["algorithm"]))
+                        cmt = idc.get_cmt(ea, 0)
+                        if cmt:
+                            idc.set_cmt(ea, cmt + ' ' + const["name"], 0)
+                        else:
+                            idc.set_cmt(ea, const["name"], 0)
+                        break
+                ea = idc.find_code(ea, idc.SEARCH_DOWN)
     print("[*] finished")
 
 if __name__ == '__main__':
