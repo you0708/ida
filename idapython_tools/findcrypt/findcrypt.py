@@ -1,5 +1,5 @@
 import struct
-import idc, idautils
+import idc, idautils, ida_name
 import ida_bytes
 import ida_ua
 from consts import *
@@ -36,7 +36,7 @@ def main():
                     continue
                 if map(lambda x:ord(x), idc.get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
-                    idc.set_name(ea, const["name"])
+                    idc.set_name(ea, const["name"], ida_name.SN_FORCE)
                     if const["size"] == "B":
                         idc.create_byte(ea)
                     elif const["size"] == "L":
