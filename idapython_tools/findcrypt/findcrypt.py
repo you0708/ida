@@ -15,10 +15,10 @@ def convert_to_byte_array(const):
         byte_array = const["array"]
     elif const["size"] == "L":
         for val in const["array"]:
-            byte_array += map(lambda x:ord(x), struct.pack("<L", val))
+            byte_array += [x for x in bytearray(struct.pack('<L', val))]
     elif const["size"] == "Q":
         for val in const["array"]:
-            byte_array += map(lambda x:ord(x), struct.pack("<Q", val))
+            byte_array += [x for x in bytearray(struct.pack('<Q', val))]
     return byte_array
 
 def main():
@@ -85,7 +85,7 @@ def main():
                 imm_operands = []
                 insn = ida_ua.insn_t()
                 ida_ua.decode_insn(insn, ea)
-                for i in xrange(len(insn.ops)):
+                for i in range(len(insn.ops)):
                     if insn.ops[i].type == ida_ua.o_void:
                         break
                     if insn.ops[i].type == ida_ua.o_imm:
