@@ -2220,6 +2220,9 @@ sparse_consts = [
     {"algorithm": "MD5",
      "name": "MD5_initstate",
      "array": [ 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 ]},
+    {"algorithm": "aPLib",
+     "name": "aPLib_magic",
+     "array": [ 0x32335041 ]},
 ]
 
 operand_consts = [

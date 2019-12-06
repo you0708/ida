@@ -15,10 +15,10 @@ def convert_to_byte_array(const):
         byte_array = const["array"]
     elif const["size"] == "L":
         for val in const["array"]:
-            byte_array += map(lambda x:ord(x), struct.pack("<L", val))
+            byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<L", val)))
     elif const["size"] == "Q":
         for val in const["array"]:
-            byte_array += map(lambda x:ord(x), struct.pack("<Q", val))
+            byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<Q", val)))
     return byte_array
 
 def main():
@@ -34,7 +34,7 @@ def main():
             for const in non_sparse_consts:
                 if bbbb != const["byte_array"][:4]:
                     continue
-                if map(lambda x:ord(x), idc.get_bytes(ea, len(const["byte_array"]))) == const["byte_array"]:
+                if list(map(lambda x:x if type(x) == int else ord(x), idc.get_bytes(ea, len(const["byte_array"])))) == const["byte_array"]:
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
                     idc.set_name(ea, const["name"], ida_name.SN_FORCE)
                     if const["size"] == "B":
@@ -85,7 +85,7 @@ def main():
                 imm_operands = []
                 insn = ida_ua.insn_t()
                 ida_ua.decode_insn(insn, ea)
-                for i in xrange(len(insn.ops)):
+                for i in range(len(insn.ops)):
                     if insn.ops[i].type == ida_ua.o_void:
                         break
                     if insn.ops[i].type == ida_ua.o_imm:
