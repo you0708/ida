@@ -2,7 +2,7 @@ import struct
 import idc, idautils, ida_name
 import ida_bytes
 import ida_ua
-from consts import *
+from consts import non_sparse_consts, sparse_consts, operand_consts
 
 if idc.BADADDR == 0xFFFFFFFF:
     digits = 8
