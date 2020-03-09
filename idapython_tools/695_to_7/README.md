@@ -1,12 +1,12 @@
 # 695 to 7 - IDAPython API name converter
-A Python script to convert IDAPython API names from 6.x to 7.x.
+A Python script to convert IDAPython API names from 6.x to 7.x. Of course, it's not perfect because it only replaces API names by using regex.
 
 ## How to use
 Execute 695_to_7.py as the following:
 ```
 $ python 695_to_7.py test.py 
 [*] Read /Applications/IDA Pro 7.4/ida.app/Contents/MacOS/python/2/idc_bc695.py
-[*] Read idapython_tools/695_to_7/695_to_7_doc.html
+[*] Read 695_to_7_doc.html
 [*] Save converted script as test_new.py
 [*] The script is using the following modules:
 ida_kernwin, ida_ua
