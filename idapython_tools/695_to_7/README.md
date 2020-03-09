@@ -24,8 +24,4 @@ $ diff test.py test_new.py
 >         data = ida_ua.print_operand(ea, 1)
 ```
 
-The script attempts to download https://www.hex-rays.com/products/ida/support/idapython_docs/toc-everything.html if 695_to_7_doc.html doesn't exist, 
-
-```
-
-```
+The script attempts to download https://www.hex-rays.com/products/ida/support/idapython_docs/toc-everything.html if 695_to_7_doc.html doesn't exist.
