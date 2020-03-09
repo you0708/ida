@@ -11,7 +11,7 @@ else:
 
 # def AskYN(defval, prompt): return ask_yn(defval, prompt)
 # Warning=ida_kernwin.warning
-DEF_PATTERNS = [re.compile(r'def (.+)\(.*\): return (.+)\(.*\)'),
+DEF_PATTERNS = [re.compile(r'def ([^\(]+)\(.*\): return ([^\(]+)\(.*\)'),
                 re.compile(r'(.+)=(.+)')]
 
 IDAPYTHON_DOC_URL = 'https://www.hex-rays.com/products/ida/support/idapython_docs/toc-everything.html'
@@ -37,7 +37,7 @@ def main():
         for pattern in DEF_PATTERNS:
             m = re.match(pattern, line)
             if m:
-                bc695.append([m.group(1), m.group(2)])
+                bc695.append([m.group(1), m.group(2), line])
                 break
     fp.close()
 
@@ -55,25 +55,27 @@ def main():
         fp.write(text)
         fp.close()
     html_tag_pattern = re.compile(r"<[^>]*?>")
-    new_names = html_tag_pattern.sub("", text).split(' ')
+    new_names = sorted(set(html_tag_pattern.sub("", text).split(' ')), reverse=True)
 
     replace_list = []
-    for old, new in bc695:
-        if new.isdigit() or new.startswith('0x'):
-            replace_list.append([old, new])
+    for old, new, line in bc695:
+        if new.isdigit() or new.startswith('0x') or len(new.split('.')) == 2:
+            replace_list.append([old, new, line])
             continue
         for name in new_names:
             if new in name:
-                replace_list.append([old, name])
+                replace_list.append([old, name, line])
                 break
 
+    print('[*] Convert {}'.format(args.FILE))
     fp = open(args.FILE, 'r')
     data = fp.read()
     fp.close()
     used_modules = []
-    for old, new in replace_list:
+    for old, new, line in replace_list:
         tmp = re.sub(re.compile(r'(idc\.|idaapi\.)*'+old), new, data)
         if data != tmp:
+            print(format(line))
             used_modules.append(new.split('.')[0])
             data = tmp
     
