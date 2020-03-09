@@ -14,7 +14,7 @@ def AskAddr(defval, prompt): return ida_kernwin.ask_addr(defval, prompt)
 def GetOpnd(ea, n): return print_operand(ea, n)
 [*] Save converted script as test_new.py
 [*] The script is using the following modules:
-ida_kernwin, ida_ua
+ida_kernwin, idc
 $
 $ diff test.py test_new.py
 10,11c10,11
