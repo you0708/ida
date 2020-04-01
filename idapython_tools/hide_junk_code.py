@@ -28,7 +28,7 @@ def main():
         if s.use32():
             junk_patterns = junk_patterns_x86
         elif s.use64():
-            junk_patterns = junk_patterns_x86
+            junk_patterns = junk_patterns_x64
         else:
             print('[!] unsupported arch')
 
