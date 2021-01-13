@@ -2,9 +2,9 @@ import platform, re, os
 import argparse
 
 if platform.system() == 'Darwin':
-    BC695_FILE = '/Applications/IDA Pro 7.4/ida.app/Contents/MacOS/python/2/idc_bc695.py'
+    BC695_FILE = '/Applications/IDA Pro 7.5/ida.app/Contents/MacOS/python/2/idc_bc695.py'
 elif platform.system() == 'Windows':
-    BC695_FILE = 'C:\\Program Files\\IDA Pro 7.4\\python\\2\\idc_bc695.py'
+    BC695_FILE = 'C:\\Program Files\\IDA Pro 7.5\\python\\2\\idc_bc695.py'
 else:
     print('[!] Unsupported OS')
     exit()
@@ -72,18 +72,23 @@ def main():
     data = fp.read()
     fp.close()
     used_modules = []
+    flag_modified = False
     for old, new, line in replace_list:
-        tmp = re.sub(re.compile(r'(idc\.|idaapi\.)*'+old), new, data)
+        tmp = re.sub(re.compile(r'([ \n])(idc\.|idaapi\.)*'+old), r'\1'+new, data)
         if data != tmp:
+            flag_modified = True
             print(format(line))
             used_modules.append(new.split('.')[0])
             data = tmp
     
-    fp = open(out_file, 'w')
-    fp.write(data)
-    fp.close()
-    print('[*] Save converted script as {}'.format(out_file))
-    print('[*] The script is using the following modules:\n{}'.format(', '.join(set(used_modules))))
+    if flag_modified:
+        fp = open(out_file, 'w')
+        fp.write(data)
+        fp.close()
+        print('[*] Save converted script as {}'.format(out_file))
+        print('[*] The script is using the following modules:\n{}'.format(', '.join(set(used_modules))))
+    else:
+        print('[*] Nothing to do')
 
 if __name__ == "__main__":
     main()
