@@ -2279,7 +2279,19 @@ operand_consts = [
      "value": 0x165667C5},
     {"algorithm": "CRC64",
      "name": "CRC64_ECMA",
-     "value": 0xC96C5795D7870F42}
+     "value": 0xC96C5795D7870F42},
+    {"algorithm": "FNV-1-32",
+     "name": "FNV-1-32_prime",
+     "value": 0x01000193},
+    {"algorithm": "FNV-1-32",
+     "name": "FNV-1-32_offset_basis",
+     "value": 0x811c9dc5},
+    {"algorithm": "FNV-1-64",
+     "name": "FNV-1-64_prime",
+     "value": 0x00000100000001B3},
+    {"algorithm": "FNV-1-64",
+     "name": "FNV-1-64_offset_basis",
+     "value": 0xcbf29ce484222325}
 ]
 
 def main():

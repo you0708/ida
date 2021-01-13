@@ -16,6 +16,8 @@ Execute findcrypt.py on your IDA. Tested on IDA 7.0+ for macOS.
 * Blowfish: Blowfish_P_array, Blowfish_S_boxes
 * CRC32: CRC32_m_tab_le, CRC32_m_tab_be
 * CRC64: CRC64_ECMA
+* FNV-1-32: FNV-1-32_prime, FNV-1-32_offset_basis
+* FNV-1-64: FNV-1-64_prime, FNV-1-64_offset_basis
 * MD5: MD5_T, MD5_initstate
 * Salsa20_ChaCha: Salsa20_ChaCha_sigma, Salsa20_ChaCha_tau
 * SHA1: SHA1_H
