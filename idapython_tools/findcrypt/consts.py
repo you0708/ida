@@ -2277,6 +2277,9 @@ operand_consts = [
     {"algorithm": "xxHash64",
      "name": "xxHash64_PRIME64_5(low-order)",
      "value": 0x165667C5},
+    {"algorithm": "CRC64",
+     "name": "CRC64_ECMA",
+     "value": 0xC96C5795D7870F42}
 ]
 
 def main():
