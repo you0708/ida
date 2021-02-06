@@ -38,10 +38,13 @@ def main():
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
                     idc.set_name(ea, const["name"], ida_name.SN_FORCE)
                     if const["size"] == "B":
+                        ida_bytes.del_items(ea, 0, len(const["array"]))
                         idc.create_byte(ea)
                     elif const["size"] == "L":
+                        ida_bytes.del_items(ea, 0, len(const["array"])*4)
                         idc.create_dword(ea)
                     elif const["size"] == "Q":
+                        ida_bytes.del_items(ea, 0, len(const["array"])*8)
                         idc.create_qword(ea)
                     idc.make_array(ea, len(const["array"]))
                     ea += len(const["byte_array"]) - 4
