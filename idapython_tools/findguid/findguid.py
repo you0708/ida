@@ -24,14 +24,14 @@ def get_guid_tid():
 def make_binary_pattern(guid):
     # sample guid: 0F87369F-A4E5-4CFC-BD3E-73E6154572DD
     tmp = guid.split('-')
-    data = ''
+    data = b''
     data += struct.pack('<L', int(tmp[0], 16))
     data += struct.pack('<H', int(tmp[1], 16))
     data += struct.pack('<H', int(tmp[2], 16))
     data += struct.pack('>H', int(tmp[3], 16))
     data += binascii.a2b_hex(tmp[4])
 
-    binary_pattern = ' '.join(map(binascii.b2a_hex, list(data)))
+    binary_pattern = ' '.join(map(lambda x:format(x if type(x) == int else ord(x), '02x'), list(data)))
     return binary_pattern
 
 def main():
