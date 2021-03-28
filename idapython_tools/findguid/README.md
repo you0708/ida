@@ -9,9 +9,8 @@ FindGUID supports the following GUID types:
 * Media Type
 
 ## How to use
-Execute findguid.py on your IDA. Tested on IDA 7.4 for macOS/Windows.
+Execute findguid.py on your IDA. Tested on IDA 7.6 for macOS/Windows.
 
 ## Todo
-1. Python 3 support - Not sure if the script supports Python 3 because I'm still using Python 2 on IDA.
-2. Additional GUID support
-3. Performance improvement
+1. Additional GUID support
+2. Performance improvement
