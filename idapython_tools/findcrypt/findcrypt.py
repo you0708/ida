@@ -4,6 +4,11 @@ import ida_bytes
 import ida_ua
 from consts import non_sparse_consts, sparse_consts, operand_consts
 
+if 'g_fc_prefix_cmt' not in globals():
+    g_fc_prefix_cmt = "FC: "
+if 'g_fc_prefix_var' not in globals():
+    g_fc_prefix_var = "FC_"
+
 if idc.BADADDR == 0xFFFFFFFF:
     digits = 8
 else:
@@ -36,7 +41,7 @@ def main():
                     continue
                 if list(map(lambda x:x if type(x) == int else ord(x), idc.get_bytes(ea, len(const["byte_array"])))) == const["byte_array"]:
                     print(("0x%0" + str(digits) + "X: found const array %s (used in %s)") % (ea, const["name"], const["algorithm"]))
-                    idc.set_name(ea, const["name"], ida_name.SN_FORCE)
+                    idc.set_name(ea, g_fc_prefix_var + const["name"], ida_name.SN_FORCE)
                     if const["size"] == "B":
                         ida_bytes.del_items(ea, 0, len(const["array"]))
                         idc.create_byte(ea)
@@ -70,9 +75,9 @@ def main():
                         print(("0x%0" + str(digits) + "X: found sparse constants for %s") % (ea, const["algorithm"]))
                         cmt = idc.get_cmt(idc.prev_head(ea), 0)
                         if cmt:
-                            idc.set_cmt(idc.prev_head(ea), cmt + ' ' + const["name"], 0)
+                            idc.set_cmt(idc.prev_head(ea), cmt + ' ' + g_fc_prefix_cmt + const["name"], 0)
                         else:
-                            idc.set_cmt(idc.prev_head(ea), const["name"], 0)
+                            idc.set_cmt(idc.prev_head(ea), g_fc_prefix_cmt + const["name"], 0)
                         ea = tmp
                         break
                 ea += 1
@@ -101,9 +106,9 @@ def main():
                         print(("0x%0" + str(digits) + "X: found immediate operand constants for %s") % (ea, const["algorithm"]))
                         cmt = idc.get_cmt(ea, 0)
                         if cmt:
-                            idc.set_cmt(ea, cmt + ' ' + const["name"], 0)
+                            idc.set_cmt(ea, cmt + ' ' + g_fc_prefix_cmt + const["name"], 0)
                         else:
-                            idc.set_cmt(ea, const["name"], 0)
+                            idc.set_cmt(ea, g_fc_prefix_cmt + const["name"], 0)
                         break
                 ea = idc.find_code(ea, idc.SEARCH_DOWN)
     print("[*] finished")
