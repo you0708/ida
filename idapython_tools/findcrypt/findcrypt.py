@@ -1,7 +1,5 @@
-import struct
-import idc, idautils, ida_name
-import ida_bytes
-import ida_ua
+import struct, copy
+import idc, idautils, ida_name, ida_bytes, ida_ua
 from consts import non_sparse_consts, sparse_consts, operand_consts
 
 if 'g_fc_prefix_cmt' not in globals():
@@ -14,29 +12,41 @@ if idc.BADADDR == 0xFFFFFFFF:
 else:
     digits = 16
 
-def convert_to_byte_array(const):
+def convert_to_byte_array(const, big_endian=False):
     byte_array = []
     if const["size"] == "B":
         byte_array = const["array"]
     elif const["size"] == "L":
         for val in const["array"]:
-            byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<L", val)))
+            if big_endian:
+                byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack(">L", val)))
+            else:
+                byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<L", val)))
     elif const["size"] == "Q":
         for val in const["array"]:
-            byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<Q", val)))
+            if big_endian:
+                byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack(">Q", val)))
+            else:
+                byte_array += list(map(lambda x:x if type(x) == int else ord(x), struct.pack("<Q", val)))
     return byte_array
 
 def main():
     print("[*] loading crypto constants")
+    non_sparse_consts2 = []
     for const in non_sparse_consts:
         const["byte_array"] = convert_to_byte_array(const)
+        non_sparse_consts2.append(const)
+        if const["size"] != "B":
+            const = copy.copy(const)
+            const["byte_array"] = convert_to_byte_array(const, big_endian=True)
+            non_sparse_consts2.append(const)
 
     for start in idautils.Segments():
         print("[*] searching for crypto constants in %s" % idc.get_segm_name(start))
         ea = start
         while ea < idc.get_segm_end(start):
             bbbb = list(struct.unpack("BBBB", idc.get_bytes(ea, 4)))
-            for const in non_sparse_consts:
+            for const in non_sparse_consts2:
                 if bbbb != const["byte_array"][:4]:
                     continue
                 if list(map(lambda x:x if type(x) == int else ord(x), idc.get_bytes(ea, len(const["byte_array"])))) == const["byte_array"]:
